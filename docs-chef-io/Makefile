@@ -5,12 +5,13 @@ SHELL=bash
 preview_netlify: chef_web_docs
 	cp -R content/* chef-web-docs/_vendor/github.com/inspec/inspec/docs-chef-io/content
 	cp -R static/* chef-web-docs/_vendor/github.com/inspec/inspec/docs-chef-io/static
+	cp -R layouts chef-web-docs/_vendor/github.com/inspec/inspec/docs-chef-io/layouts
 	cp -R config.toml chef-web-docs/_vendor/github.com/inspec/inspec/docs-chef-io/
 	pushd chef-web-docs && make assets; hugo --gc --minify --buildFuture && popd
 
 serve: chef_web_docs
 	echo "replace github.com/inspec/inspec/docs-chef-io => ../" >> chef-web-docs/go.mod
-	pushd chef-web-docs && make assets; hugo server --buildDrafts --buildFuture --noHTTPCache --ignoreVendorPaths "github.com/inspec/inspec/**" && popd
+	pushd chef-web-docs && make assets; hugo server --buildDrafts --buildFuture --noHTTPCache && popd
 
 chef_web_docs:
 	if [ -d "chef-web-docs/" ]; then \
